@@ -1,0 +1,1 @@
+npm run watch -> updates built static folder automatically, django serves new bundled files

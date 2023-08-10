@@ -1,0 +1,165 @@
+.nav_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    padding: 0.5rem 2rem;
+    gap: min(5%, 3rem);
+
+    background: hsla(0 0% 0% / 0.3);
+    backdrop-filter: blur(1rem);
+}
+
+.logo_container>img {
+    display: inline-block;
+    width: 4rem;
+    aspect-ratio: 1 / 1;
+}
+
+
+.nav_list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    gap: 3rem;
+
+    list-style: none;
+}
+
+
+.nav_item:hover {
+    transition-duration: 500ms;
+    transition-timing-function: ease-out;
+    transform: translateY(-6px);
+}
+
+
+.nav_link {
+    text-decoration: none;
+    color: white;
+    font-size: clamp(1rem, 1.3rem, 1.5rem);
+}
+
+.nav_link:hover {
+    color: lightblue;
+}
+
+.nav_close_btn {
+    display: none;
+}
+
+
+/* Responsive UI navbar for smaller phone sizes */
+
+@media (width <=600px) {
+
+    /* phone menu slideout animation */
+    @keyframes menuSlideout {
+        from {
+            inset: 0 0 0 100%;
+        }
+
+        to {
+            inset: 0 0 0 30%;
+        }
+    }
+
+    /* reset previous UI components so that they are not present in toggled menu */
+    .nav_container[menu-toggled="true"] {
+        background: none;
+        backdrop-filter: none;
+    }
+
+    /* if menu in phone ui is not toggled hide desktop navlist and show sidemenu only if its toggled */
+    .nav_list {
+        display: none;
+    }
+
+    .nav_list[menu-toggled="true"] {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+
+        justify-content: center;
+        gap: 3rem;
+
+        inset: 0 0 0 30%;
+        height: 100vh;
+
+        background: hsla(0 0% 0% / 0.3);
+        backdrop-filter: blur(1rem);
+        animation: menuSlideout 250ms ease-out 1;
+        animation-fill-mode: both;
+    }
+
+    /* slideout of text */
+
+    @keyframes navItemSlideout {
+        from {
+            opacity: 0.2;
+            transform: translate(200px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translate(0px);
+        }
+    }
+
+    .nav_item {
+        animation: navItemSlideout 750ms ease-out;
+        /* hide initial text position beofre animation start */
+        animation-fill-mode: both;
+    }
+
+    .nav_item:nth-child(1) {
+        animation-delay: 100ms;
+    }
+
+    .nav_item:nth-child(2) {
+        animation-delay: 200ms;
+    }
+
+    .nav_item:nth-child(3) {
+        animation-delay: 300ms;
+    }
+
+    .nav_item:nth-child(4) {
+        animation-delay: 400ms;
+    }
+
+    .burger_container {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        margin-left: auto;
+    }
+
+    .burger_container:hover {
+        cursor: pointer;
+    }
+
+    .burger_line {
+        width: 1.7rem;
+        height: 2px;
+        background-color: white;
+    }
+
+    /* if menu not toggled don't show the close btn */
+    .nav_close_btn[menu-toggled="true"] {
+        display: block;
+        position: absolute;
+        top: 1rem;
+        right: 2rem;
+        z-index: 1000;
+        background: none;
+        border: none;
+    }
+
+    .nav_close_btn[menu-toggled="true"]:after {
+        font-size: 2rem;
+        color: white;
+        content: "\00d7";
+    }
+}

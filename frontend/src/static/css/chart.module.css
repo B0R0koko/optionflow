@@ -1,0 +1,37 @@
+.chart_container {
+    width: 500px;
+    height: 500px;
+
+    padding: 1rem;
+    margin-top: 1rem;
+    background-color: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 0 10px 10px rgba(0, 0, 255, 0.411);
+}
+
+.select_ticker {
+    border: none;
+    color: grey;
+}
+
+.select_ticker>option {
+    color: black;
+}
+
+.search_input {
+    margin-left: 1rem;
+    width: 5em;
+}
+
+@media (width <=600px) {
+    .chart_container {
+        width: clamp(200px, 100px + 50%, 500px);
+        margin-inline: auto;
+    }
+}
+
+@media (height <=1000px) {
+    .chart_container {
+        height: clamp(300px, 100px + 40%, 500px)
+    }
+}
