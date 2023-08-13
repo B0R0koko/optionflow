@@ -41,14 +41,14 @@ class CandleRequest(Request):
 def main():
     reqs = [
         CandleRequest(
-            endpoint="https://iss.moex.com/iss/engines/stock/markets/shares/securities/GAZP/candles.json",
+            endpoint="https://iss.moex.com/iss/engines/stock/markets/shares/securities/SBER/candles.json",
             params={
                 "from": "2022-01-01",
                 "till": "2023-08-03",
                 "interval": "60",
                 "start": start,
             },
-            meta={"ticker": "GAZP"},
+            meta={"ticker": "SBER"},
             rps=2,
         )
         for start in range(0, 10000, 500)

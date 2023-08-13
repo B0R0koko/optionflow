@@ -1,8 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
-import { createChart } from "lightweight-charts";
+import React, { useEffect, useRef, useState } from "react"
+import { createChart } from "lightweight-charts"
+import axios from "axios"
 
 
 import css from "@styles/chart.module";
+
+// how many datapoints will be loaded in one go 
+const LIMIT = 500;
 
 
 export default function ChartComponent() {
@@ -32,11 +36,24 @@ export default function ChartComponent() {
         })
     }
 
-    async function plotData(ticker) {
+    async function fetchData(offset = 0) {
         // fetch data from api endpoint
-        const resp = await fetch(`/api/candles?ticker=${ticker}`)
-        let data = await resp.json()
-        data = transformData(data)
+        let resp = await axios.get(
+            "/api/candles", {
+            params: {
+                ticker: ticker,
+                offset: offset,
+                limit: LIMIT
+            }
+        }
+        ) // -> returns {"meta": {}, "data": []}
+        resp = resp.data
+        return transformData(resp.data)
+    }
+
+    async function plotChart() {
+
+        let data = await fetchData()
         // create chart and plot retrieved data
         const chart = createChart(chartRef.current, chartOptions)
         const series = chart.addCandlestickSeries()
@@ -50,6 +67,31 @@ export default function ChartComponent() {
         })
 
         series.setData(data)
+
+        // allows to lazyload of data
+        const timeScale = chart.timeScale()
+
+        var timer = null
+        var offset = 0
+
+        timeScale.subscribeVisibleLogicalRangeChange(() => {
+            if (timer !== null) {
+                return;
+            }
+            timer = setTimeout(async () => {
+                var logicalRange = timeScale.getVisibleLogicalRange();
+                if (logicalRange !== null) {
+                    var barsInfo = series.barsInLogicalRange(logicalRange);
+                    if (barsInfo !== null && barsInfo.barsBefore < 10) {
+                        offset += LIMIT
+                        const newData = await fetchData(offset)
+                        data = [...newData, ...data]
+                        series.setData(data)
+                    }
+                }
+                timer = null;
+            }, 2);
+        });
     }
 
     function handleSelect(event) {
@@ -57,7 +99,7 @@ export default function ChartComponent() {
     }
 
     useEffect(() => {
-        plotData(ticker)
+        plotChart(ticker)
         return () => {
             // on each ticker update clean up previous chart before creating next one 
             // so that they do not stack up on top of each other

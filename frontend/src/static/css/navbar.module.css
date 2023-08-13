@@ -1,6 +1,8 @@
 .nav_container {
     display: flex;
+    width: 100%;
     flex-direction: row;
+    justify-content: space-between;
     align-items: center;
 
     padding: 0.5rem 2rem;
@@ -10,12 +12,24 @@
     backdrop-filter: blur(1rem);
 }
 
+.nav_left {
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+}
+
+.nav_right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 3rem;
+}
+
 .logo_container>img {
     display: inline-block;
     width: 4rem;
     aspect-ratio: 1 / 1;
 }
-
 
 .nav_list {
     display: flex;
@@ -27,13 +41,11 @@
     list-style: none;
 }
 
-
 .nav_item:hover {
     transition-duration: 500ms;
     transition-timing-function: ease-out;
     transform: translateY(-6px);
 }
-
 
 .nav_link {
     text-decoration: none;
@@ -49,10 +61,112 @@
     display: none;
 }
 
+.login_btn {
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+}
+
+.login_btn:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+}
+
+/* login modal (popup) */
+
+.login_modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: max(20%, 300px);
+    aspect-ratio: 1 / 1;
+
+    border: none;
+    box-shadow: 0 0 10px 10px rgba(0, 0, 255, 0.411);
+    border-radius: 1rem;
+}
+
+.login_modal::backdrop {
+    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%,
+            rgba(137, 12, 240, 1) 0%, rgba(3, 175, 210, 1) 97%);
+    opacity: 0.95;
+}
+
+.modal_content {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+}
+
+.close_modal_btn {
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
+    border: none;
+    padding: none;
+}
+
+.close_modal_btn:after {
+    font-size: 2rem;
+    color: black;
+    content: "\00d7";
+}
+
+.login_form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.login_field {
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login_form input {
+    width: 80%;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: solid 1px rgba(137, 12, 240, 1);
+}
+
+.login_form input:focus {
+    border-color: rgba(3, 175, 210, 1);
+    outline: none;
+}
+
+.login_form input[data-error="true"] {
+    border-color: red;
+}
+
+.login_form input:focus[data-error="true"] {
+    border-color: red;
+}
+
+.user_icon,
+.pwd_icon {
+    position: absolute;
+    right: 3rem;
+    width: 1.5rem;
+    aspect-ratio: 1 / 1;
+}
 
 /* Responsive UI navbar for smaller phone sizes */
 
-@media (width <=600px) {
+@media (width <=700px) {
 
     /* phone menu slideout animation */
     @keyframes menuSlideout {
@@ -87,10 +201,11 @@
         inset: 0 0 0 30%;
         height: 100vh;
 
-        background: hsla(0 0% 0% / 0.3);
+        background: hsla(0 0% 0% / 0.7);
         backdrop-filter: blur(1rem);
         animation: menuSlideout 250ms ease-out 1;
         animation-fill-mode: both;
+        z-index: 10000;
     }
 
     /* slideout of text */
@@ -152,7 +267,7 @@
         position: absolute;
         top: 1rem;
         right: 2rem;
-        z-index: 1000;
+        z-index: 20000;
         background: none;
         border: none;
     }
